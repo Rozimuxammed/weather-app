@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Sun,
   Moon,
@@ -141,10 +141,10 @@ export default function BeautifulWeatherUI() {
                 </div>
 
                 {/* Current weather stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                   <StatCard
                     icon={<Thermometer className="h-5 w-5" />}
-                    label="His qilinadi"
+                    label="Harorat"
                     value={`${Math.round(
                       forecastList[0]?.main.feels_like || 0
                     )}°C`}
@@ -161,14 +161,6 @@ export default function BeautifulWeatherUI() {
                     label="Shamol"
                     value={`${forecastList[0]?.wind.speed || 0} m/s`}
                     color="text-cyan-400"
-                  />
-                  <StatCard
-                    icon={<Eye className="h-5 w-5" />}
-                    label="Ko'rinish"
-                    value={`${(
-                      (forecastList[0]?.visibility || 0) / 1000
-                    ).toFixed(1)} km`}
-                    color="text-indigo-400"
                   />
                 </div>
 

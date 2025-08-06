@@ -17,10 +17,43 @@ import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { MoonIcon, Sun } from "lucide-react";
+import { MoonIcon, Sun, Droplet, Wind, Cloud } from "lucide-react";
 import axios from "axios";
 import { Skeleton } from "./ui/skeleton";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+const WeatherIcon = ({ iconCode, size = "w-16 h-16" }) => {
+  const iconMap = {
+    "01d": <Sun className={`${size} text-yellow-400 animate-pulse`} />,
+    "01n": <MoonIcon className={`${size} text-indigo-300`} />,
+    "02d": <Cloud className={`${size} text-gray-300`} />,
+    "02n": <Cloud className={`${size} text-gray-400`} />,
+    "03d": <Cloud className={`${size} text-gray-400`} />,
+    "03n": <Cloud className={`${size} text-gray-500`} />,
+    "04d": <Cloud className={`${size} text-gray-500`} />,
+    "04n": <Cloud className={`${size} text-gray-600`} />,
+    "10d": <Cloud className={`${size} text-blue-400`} />,
+    "10n": <Cloud className={`${size} text-blue-500`} />,
+    "09d": <Cloud className={`${size} text-blue-400`} />,
+    "09n": <Cloud className={`${size} text-blue-500`} />,
+    "11d": <Cloud className={`${size} text-yellow-300`} />,
+    "11n": <Cloud className={`${size} text-yellow-400`} />,
+    "13d": <Cloud className={`${size} text-white`} />,
+    "13n": <Cloud className={`${size} text-gray-100`} />,
+    "50d": <Cloud className={`${size} text-gray-400`} />,
+    "50n": <Cloud className={`${size} text-gray-500`} />,
+  };
+
+  return (
+    iconMap[iconCode] || (
+      <img
+        src={`http://openweathermap.org/img/wn/${iconCode}@2x.png`}
+        alt="weather icon"
+        className={size}
+      />
+    )
+  );
+};
 
 function EarthSphere({ onClickEarth }) {
   const earthRef = useRef();
@@ -81,8 +114,6 @@ export default function Earth() {
     (state) => state.weatherReducer
   );
 
-
-
   const apiKey = "129796c288d562d3a9ef920c68ee1612";
 
   useEffect(() => {
@@ -110,7 +141,10 @@ export default function Earth() {
     return daily.map((day) => ({
       date: day.dt_txt.split(" ")[0],
       temp: day.main.temp,
+      humidity: day.main.humidity,
+      wind: day.wind.speed,
       desc: day.weather[0].description,
+      icon: day.weather[0].icon,
     }));
   };
 
@@ -180,7 +214,7 @@ export default function Earth() {
 
   return (
     <div className="w-full h-screen relative bg-[#0EA5E9] dark:bg-[#0b1c2c] transition-colors">
-        
+      {/* Navbar */}
       <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-r from-[#0EA5E9]/80 to-blue-600/80 dark:from-gray-900 dark:to-gray-800 backdrop-blur-md p-4 flex items-center justify-between shadow-xl rounded-b-2xl border-b border-white/20">
         <div
           onClick={() => window.location.reload()}
@@ -209,8 +243,7 @@ export default function Earth() {
           </form>
           <Button
             onClick={toggleTheme}
-            variant="ghost"
-            className="bg-white/30 cursor-pointer hover:bg-white/50 dark:bg-gray-700 dark:hover:bg-gray-600 text-white dark:text-white p-2 rounded-full transition-colors duration-300"
+            className="cursor-pointer  bg-white/30 dark:bg-gray-700 text-white dark:text-white rounded-lg p-2 border border-white/20 backdrop-blur-md hover:bg-white/50 dark:hover:bg-gray-600 hover:scale-105 transition-all duration-300"
           >
             {darkMode ? (
               <Sun className="h-5 w-5" />
@@ -221,17 +254,19 @@ export default function Earth() {
         </div>
       </div>
 
+      {/* Loading Skeleton */}
       {loading && (
         <div className="absolute bottom-4 left-4 right-4 z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
           {Array.from({ length: 5 }).map((_, i) => (
             <Skeleton
               key={i}
-              className="h-[130px] rounded-2xl bg-white/30 dark:bg-gray-700"
+              className="h-[238px] rounded-2xl bg-white/30 dark:bg-gray-700"
             />
           ))}
         </div>
       )}
 
+      {/* Weather Tooltip */}
       {!loading && weatherLocalInfo && (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -241,7 +276,7 @@ export default function Earth() {
                   state: { weatherData: weatherLocalInfo },
                 })
               }
-              className="absolute select-none top-44 left-4 z-20 bg-gradient-to-br from-[#0EA5E9]/90 to-blue-600/90 dark:from-gray-800 dark:to-gray-900 text-white dark:text-white border-none shadow-2xl rounded-2xl w-[400px] h-56 backdrop-blur-md"
+              className="absolute select-none top-44 left-4 z-20 bg-white/10 dark:bg-gray-900/10 bg-gradient-to-br from-[#0EA5E9]/50 to-blue-600/50 dark:from-gray-800/50 dark:to-gray-900/50 text-white dark:text-white border border-white/20 shadow-2xl rounded-2xl w-[400px] h-56 backdrop-blur-xl hover:bg-white/20 dark:hover:bg-gray-900/20 hover:scale-105 transition-all duration-300"
             >
               <CardHeader className="pb-2">
                 <CardTitle className="text-4xl font-semibold tracking-wide flex items-center gap-1">
@@ -263,6 +298,7 @@ export default function Earth() {
         </Tooltip>
       )}
 
+      {/* Earth 3D */}
       <Canvas camera={{ position: [0, 0, 8] }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 0, 5]} intensity={1} />
@@ -271,30 +307,60 @@ export default function Earth() {
         <EarthSphere onClickEarth={fetchWeatherByCoords} />
       </Canvas>
 
+      {/* Weather Cards */}
       {!loading && weatherInfo.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
-          {weatherInfo.map((item, index) => (
+        <div className="absolute bottom-4 left-4 right-4 z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
+          {weatherInfo.map((item, i) => (
             <Card
-              key={index}
-              className="bg-white/20 dark:bg-gray-800/70 text-white backdrop-blur-xl p-4 rounded-2xl shadow-xl hover:scale-105 transition-transform"
+              key={i}
+              className="group relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 hover:bg-white/20 transition-all duration-500 hover:scale-105 hover:-translate-y-2 border border-white/20 overflow-hidden"
             >
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base font-bold">
-                  {getWeekDay(item.date)}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-semibold">{item.temp}°C</div>
-                <p className="text-sm opacity-80 capitalize">
-                  {item.description}
-                </p>
-                <div className="mt-2 text-xs space-y-1">
-                  <p>💧 Namlik: {item.humidity}%</p>
-                  <p>🌬️ Shamol: {item.windSpeed} m/s</p>
-                  <p>👁️ Ko‘rinish: {item.visibility / 1000} km</p>
-                  <p>🌡️ Seziladigan: {item.feelsLike}°C</p>
-                </div>
-              </CardContent>
+              {/* Card background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0EA5E9]/30 to-blue-600/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div className="relative z-10">
+                {/* Date */}
+                <CardHeader className="pb-1">
+                  <CardTitle className="text-lg font-bold tracking-wide text-white">
+                    {getWeekDay(item.date)}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex flex-col items-center space-y-2">
+                    {/* Weather icon and temperature */}
+                    <div className="flex justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                      <WeatherIcon iconCode={item.icon} size="w-12 h-12" />
+                    </div>
+                    <div className="text-3xl font-black text-white mb-1">
+                      {Math.round(item.temp)}°C
+                    </div>
+
+                    {/* Weather details */}
+                    <div className="space-y-3 w-full">
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2 text-white/70">
+                          <Droplet className="h-4 w-4 text-blue-400" />
+                          <span>Namlik</span>
+                        </div>
+                        <span className="text-white font-semibold">
+                          {item.humidity}%
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2 text-white/70">
+                          <Wind className="h-4 w-4 text-cyan-400" />
+                          <span>Shamol</span>
+                        </div>
+                        <span className="text-white font-semibold">
+                          {item.wind} m/s
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </div>
+              {/* Hover effect indicator */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0EA5E9]/90 to-blue-600/90 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             </Card>
           ))}
         </div>
