@@ -214,7 +214,6 @@ export default function Earth() {
 
   return (
     <div className="w-full h-screen relative bg-[#0EA5E9] dark:bg-[#0b1c2c] transition-colors">
-      {/* Navbar */}
       <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-r from-[#0EA5E9]/80 to-blue-600/80 dark:from-gray-900 dark:to-gray-800 backdrop-blur-md p-4 flex items-center justify-between shadow-xl rounded-b-2xl border-b border-white/20">
         <div
           onClick={() => window.location.reload()}
@@ -254,7 +253,6 @@ export default function Earth() {
         </div>
       </div>
 
-      {/* Loading Skeleton */}
       {loading && (
         <div className="absolute bottom-4 left-4 right-4 z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -266,7 +264,6 @@ export default function Earth() {
         </div>
       )}
 
-      {/* Weather Tooltip */}
       {!loading && weatherLocalInfo && (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -298,7 +295,6 @@ export default function Earth() {
         </Tooltip>
       )}
 
-      {/* Earth 3D */}
       <Canvas camera={{ position: [0, 0, 8] }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 0, 5]} intensity={1} />
@@ -307,7 +303,6 @@ export default function Earth() {
         <EarthSphere onClickEarth={fetchWeatherByCoords} />
       </Canvas>
 
-      {/* Weather Cards */}
       {!loading && weatherInfo.length > 0 && (
         <div className="absolute bottom-4 left-4 right-4 z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
           {weatherInfo.map((item, i) => (
@@ -319,7 +314,6 @@ export default function Earth() {
               <div className="absolute inset-0 bg-gradient-to-br from-[#0EA5E9]/30 to-blue-600/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
               <div className="relative z-10">
-                {/* Date */}
                 <CardHeader className="pb-1">
                   <CardTitle className="text-lg font-bold tracking-wide text-white">
                     {getWeekDay(item.date)}
@@ -327,7 +321,6 @@ export default function Earth() {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="flex flex-col items-center space-y-2">
-                    {/* Weather icon and temperature */}
                     <div className="flex justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
                       <WeatherIcon iconCode={item.icon} size="w-12 h-12" />
                     </div>
@@ -335,7 +328,6 @@ export default function Earth() {
                       {Math.round(item.temp)}°C
                     </div>
 
-                    {/* Weather details */}
                     <div className="space-y-3 w-full">
                       <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center gap-2 text-white/70">
@@ -359,7 +351,6 @@ export default function Earth() {
                   </div>
                 </CardContent>
               </div>
-              {/* Hover effect indicator */}
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0EA5E9]/90 to-blue-600/90 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             </Card>
           ))}

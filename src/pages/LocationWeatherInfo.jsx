@@ -140,7 +140,6 @@ export default function BeautifulWeatherUI() {
                   </div>
                 </div>
 
-                {/* Current weather stats */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                   <StatCard
                     icon={<Thermometer className="h-5 w-5" />}
