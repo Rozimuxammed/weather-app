@@ -273,7 +273,7 @@ export default function Earth() {
                   state: { weatherData: weatherLocalInfo },
                 })
               }
-              className="absolute select-none top-44 left-4 z-20 bg-white/10 dark:bg-gray-900/10 bg-gradient-to-br from-[#0EA5E9]/50 to-blue-600/50 dark:from-gray-800/50 dark:to-gray-900/50 text-white dark:text-white border border-white/20 shadow-2xl rounded-2xl w-[400px] h-56 backdrop-blur-xl hover:bg-white/20 dark:hover:bg-gray-900/20 hover:scale-105 transition-all duration-300"
+              className="absolute select-none top-44 left-4 z-20 bg-white/10 dark:bg-gray-900/10 bg-gradient-to-br from-[#0EA5E9]/50 to-blue-600/50 dark:from-gray-800/50 dark:to-gray-900/50 text-white dark:text-white border border-white/20 shadow-2xl rounded-2xl w-[400px] h-56 backdrop-blur-xl hover:bg-white/20 dark:hover:bg-gray-900/20 transition-all duration-300"
             >
               <CardHeader className="pb-2">
                 <CardTitle className="text-4xl font-semibold tracking-wide flex items-center gap-1">
