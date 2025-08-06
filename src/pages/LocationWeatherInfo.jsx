@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import {
   Sun,
   Moon,
@@ -11,7 +11,9 @@ import {
   Gauge,
   Cloud,
   CloudRain,
+  X,
 } from "lucide-react";
+import { Button, buttonVariants } from "../components/ui/button";
 
 const WeatherIcon = ({ iconCode, size = "w-16 h-16" }) => {
   const iconMap = {
@@ -85,6 +87,15 @@ export default function BeautifulWeatherUI() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0EA5E9]/90 to-blue-600/90 dark:from-[#0b1c2c] dark:to-gray-900 relative overflow-hidden">
       {/* Animated background elements */}
+      <Link
+        to="/"
+        variant={"outline"}
+        className={`absolute cursor-pointer top-4 right-4 z-20 ${buttonVariants(
+          { variant: "outline" }
+        )}`}
+      >
+        <X className="h-10 w-10 text-gray-950 dark:text-white" />
+      </Link>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full animate-pulse"></div>
         <div
@@ -110,14 +121,9 @@ export default function BeautifulWeatherUI() {
                     <div className="p-3 bg-gradient-to-br from-[#0EA5E9]/90 to-blue-600/90 rounded-2xl">
                       <MapPin className="h-8 w-8 text-yellow-400" />
                     </div>
-                    <div>
-                      <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-                        {city.name}
-                      </h1>
-                      <p className="text-white/70 text-lg font-medium">
-                        {city.country}
-                      </p>
-                    </div>
+                    <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+                      {city.name}
+                    </h1>
                   </div>
                   <div className="text-right">
                     <div className="text-6xl md:text-8xl font-black text-white mb-2">
@@ -252,9 +258,6 @@ export default function BeautifulWeatherUI() {
                     <div className="text-3xl font-black text-white mb-1">
                       {Math.round(item.main.temp)}°
                     </div>
-                    <p className="text-white/80 capitalize text-sm font-medium">
-                      {item.weather[0].description}
-                    </p>
                   </div>
 
                   {/* Weather details */}
@@ -262,7 +265,7 @@ export default function BeautifulWeatherUI() {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2 text-white/70">
                         <Thermometer className="h-4 w-4 text-yellow-400" />
-                        <span>His qilinadi</span>
+                        <span>Harorat</span>
                       </div>
                       <span className="text-white font-semibold">
                         {Math.round(item.main.feels_like)}°

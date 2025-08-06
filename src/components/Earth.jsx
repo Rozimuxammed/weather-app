@@ -5,6 +5,11 @@ import * as THREE from "three";
 import { useDispatch, useSelector } from "react-redux";
 import politicalMap from "../assets/earth.jpg";
 import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import {
   setWeatherInfo,
   setWeatherLocalInfo,
 } from "../lib/redux/slices/weatherData-slice";
@@ -179,7 +184,7 @@ export default function Earth() {
           onClick={() => window.location.reload()}
           className="font-extrabold cursor-pointer select-none text-2xl text-white tracking-wide drop-shadow-sm"
         >
-          ☁️ Weather App
+          ☁️ Ob-havo
         </div>
         <div className="flex items-center gap-4">
           <form
@@ -227,27 +232,34 @@ export default function Earth() {
       )}
 
       {!loading && weatherLocalInfo && (
-        <Card
-          onClick={() =>
-            navigate("/locationWeatherInfo", {
-              state: { weatherData: weatherLocalInfo },
-            })
-          }
-          className="absolute select-none top-24 left-4 z-20 bg-gradient-to-br from-[#0EA5E9]/90 to-blue-600/90 dark:from-gray-800 dark:to-gray-900 text-white dark:text-white border-none shadow-2xl rounded-2xl w-[240px] backdrop-blur-md"
-        >
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold tracking-wide flex items-center gap-1">
-              {weatherLocalInfo.city.name || "Nomaʼlum joy"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="flex flex-col items-start space-y-1">
-              <p className="text-4xl font-bold">
-                {weatherLocalInfo.list[0].main.temp}°C
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Card
+              onClick={() =>
+                navigate("/locationWeatherInfo", {
+                  state: { weatherData: weatherLocalInfo },
+                })
+              }
+              className="absolute select-none top-44 left-4 z-20 bg-gradient-to-br from-[#0EA5E9]/90 to-blue-600/90 dark:from-gray-800 dark:to-gray-900 text-white dark:text-white border-none shadow-2xl rounded-2xl w-[400px] h-56 backdrop-blur-md"
+            >
+              <CardHeader className="pb-2">
+                <CardTitle className="text-4xl font-semibold tracking-wide flex items-center gap-1">
+                  {weatherLocalInfo.city.name || "Nomaʼlum joy"}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="flex flex-col items-start space-y-1">
+                  <p className="text-6xl font-bold">
+                    {weatherLocalInfo.list[0].main.temp}°C
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Batafsil ob-havo maʼlumotlari uchun bosing</p>
+          </TooltipContent>
+        </Tooltip>
       )}
 
       {/* Earth 3D */}
