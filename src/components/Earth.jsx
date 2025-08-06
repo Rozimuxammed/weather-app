@@ -81,6 +81,8 @@ export default function Earth() {
     (state) => state.weatherReducer
   );
 
+
+
   const apiKey = "129796c288d562d3a9ef920c68ee1612";
 
   useEffect(() => {
@@ -178,7 +180,7 @@ export default function Earth() {
 
   return (
     <div className="w-full h-screen relative bg-[#0EA5E9] dark:bg-[#0b1c2c] transition-colors">
-      {/* Navbar */}
+        
       <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-r from-[#0EA5E9]/80 to-blue-600/80 dark:from-gray-900 dark:to-gray-800 backdrop-blur-md p-4 flex items-center justify-between shadow-xl rounded-b-2xl border-b border-white/20">
         <div
           onClick={() => window.location.reload()}
@@ -219,7 +221,6 @@ export default function Earth() {
         </div>
       </div>
 
-      {/* Loading Skeleton */}
       {loading && (
         <div className="absolute bottom-4 left-4 right-4 z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -262,7 +263,6 @@ export default function Earth() {
         </Tooltip>
       )}
 
-      {/* Earth 3D */}
       <Canvas camera={{ position: [0, 0, 8] }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 0, 5]} intensity={1} />
@@ -271,22 +271,28 @@ export default function Earth() {
         <EarthSphere onClickEarth={fetchWeatherByCoords} />
       </Canvas>
 
-      {/* Weather Cards */}
       {!loading && weatherInfo.length > 0 && (
-        <div className="absolute bottom-4 left-4 right-4 z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
-          {weatherInfo.map((item, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
+          {weatherInfo.map((item, index) => (
             <Card
-              key={i}
-              className="bg-gradient-to-br select-none from-[#0EA5E9]/90 to-blue-500/90 dark:from-gray-800 dark:to-gray-900 text-white dark:text-white border-none shadow-2xl rounded-2xl hover:scale-105 transition-transform duration-300"
+              key={index}
+              className="bg-white/20 dark:bg-gray-800/70 text-white backdrop-blur-xl p-4 rounded-2xl shadow-xl hover:scale-105 transition-transform"
             >
-              <CardHeader className="pb-1">
-                <CardTitle className="text-lg font-bold tracking-wide">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base font-bold">
                   {getWeekDay(item.date)}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="flex flex-col items-center space-y-2">
-                  <div className="text-4xl font-semibold">{item.temp}°C</div>
+              <CardContent>
+                <div className="text-2xl font-semibold">{item.temp}°C</div>
+                <p className="text-sm opacity-80 capitalize">
+                  {item.description}
+                </p>
+                <div className="mt-2 text-xs space-y-1">
+                  <p>💧 Namlik: {item.humidity}%</p>
+                  <p>🌬️ Shamol: {item.windSpeed} m/s</p>
+                  <p>👁️ Ko‘rinish: {item.visibility / 1000} km</p>
+                  <p>🌡️ Seziladigan: {item.feelsLike}°C</p>
                 </div>
               </CardContent>
             </Card>

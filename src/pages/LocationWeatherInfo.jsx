@@ -86,7 +86,6 @@ export default function BeautifulWeatherUI() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0EA5E9]/90 to-blue-600/90 dark:from-[#0b1c2c] dark:to-gray-900 relative overflow-hidden">
-      {/* Animated background elements */}
       <Link
         to="/"
         variant={"outline"}
@@ -173,7 +172,6 @@ export default function BeautifulWeatherUI() {
                   />
                 </div>
 
-                {/* Sun times and additional info */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-white/80">
                   <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
                     <Sun className="h-6 w-6 text-yellow-400" />
@@ -212,7 +210,6 @@ export default function BeautifulWeatherUI() {
           </div>
         </div>
 
-        {/* Forecast Section */}
         <div className="mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-to-br from-[#0EA5E9]/30 to-blue-600/30 rounded-lg flex items-center justify-center">
@@ -227,11 +224,9 @@ export default function BeautifulWeatherUI() {
                 key={index}
                 className="group relative bg-white/10 backdrop-blur-xl rounded-3xl p-6 hover:bg-white/20 transition-all duration-500 hover:scale-105 hover:-translate-y-2 border border-white/20 overflow-hidden"
               >
-                {/* Card background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0EA5E9]/30 to-blue-600/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                 <div className="relative z-10">
-                  {/* Date and time */}
                   <div className="text-center mb-4">
                     <p className="text-white font-bold text-lg">
                       {new Date(item.dt * 1000).toLocaleDateString("uz-UZ", {
@@ -247,7 +242,6 @@ export default function BeautifulWeatherUI() {
                     </p>
                   </div>
 
-                  {/* Weather icon and temperature */}
                   <div className="text-center mb-4">
                     <div className="flex justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
                       <WeatherIcon
@@ -260,7 +254,6 @@ export default function BeautifulWeatherUI() {
                     </div>
                   </div>
 
-                  {/* Weather details */}
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2 text-white/70">
@@ -304,14 +297,12 @@ export default function BeautifulWeatherUI() {
                   </div>
                 </div>
 
-                {/* Hover effect indicator */}
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0EA5E9]/90 to-blue-600/90 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Additional Info Card */}
         <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-6 border border-white/20">
           <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
             <MapPin className="h-6 w-6 text-red-400" />
