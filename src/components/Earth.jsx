@@ -3,7 +3,7 @@ import { OrbitControls, Stars } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useDispatch, useSelector } from "react-redux";
-import politicalMap from "../assets/earth.png";
+import politicalMap from "../assets/earth.jpg";
 import {
   setWeatherInfo,
   setWeatherLocalInfo,
