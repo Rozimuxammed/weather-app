@@ -162,7 +162,7 @@ export default function Earth() {
         fetchWeatherByCoords({ lat, lon });
       },
       (error) => {
-        toast.error("Geolokatsiyani olishda xatolik: " + error.message);
+        toast.error("Ошибка при получении геолокации: " + error.message);
       }
     );
   }, []);
@@ -203,13 +203,13 @@ export default function Earth() {
 
   const getWeekDay = (dateStr) => {
     const days = [
-      "Yakshanba",
-      "Dushanba",
-      "Seshanba",
-      "Chorshanba",
-      "Payshanba",
-      "Juma",
-      "Shanba",
+      "Воскресенье",
+      "Понедельник",
+      "Вторник",
+      "Среда",
+      "Четверг",
+      "Пятница",
+      "Суббота",
     ];
     return days[new Date(dateStr).getDay()];
   };
@@ -229,7 +229,7 @@ export default function Earth() {
       dispatch(setWeatherLocalInfo(data));
     } catch (error) {
       toast.error(
-        `Ob-havo ma'lumotlarini olishda xatolik: ${
+        `Ошибка при получении данных о погоде: ${
           error.response?.data?.message || error.message
         }`
       );
@@ -241,7 +241,7 @@ export default function Earth() {
   const fetchWeatherByCity = async (e) => {
     e.preventDefault();
     if (!inputValue.trim()) {
-      toast.error("Iltimos, shahar nomini kiriting");
+      toast.error("Пожалуйста, введите название города");
       return;
     }
     try {
@@ -256,7 +256,7 @@ export default function Earth() {
       setInputValue("");
     } catch (error) {
       toast.error(
-        `Shahar bo‘yicha ma’lumotda xatolik: ${
+        `Ошибка при получении данных по городу: ${
           error.response?.data?.message || error.message
         }`
       );
@@ -272,7 +272,7 @@ export default function Earth() {
           onClick={() => window.location.reload()}
           className="font-extrabold cursor-pointer select-none text-xl sm:text-2xl text-white tracking-wide drop-shadow-sm mb-4 sm:mb-0"
         >
-          ☁️ Ob-havo
+          ☁️ Погода
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
           <form
@@ -281,7 +281,7 @@ export default function Earth() {
           >
             <Input
               type="text"
-              placeholder="Shahar yoki davlat nomini kiriting"
+              placeholder="Введите название города или страны"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               className="w-full sm:w-64 px-4 py-2 rounded-lg text-sm font-medium bg-white/80 dark:bg-gray-700 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-300 focus:ring-2 focus:ring-blue-300 focus:outline-none"
@@ -290,7 +290,7 @@ export default function Earth() {
               type="submit"
               className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-100 dark:bg-gray-100 dark:text-blue-700 dark:hover:bg-gray-200 font-semibold px-4 py-2 rounded-lg shadow"
             >
-              Qidirish
+              Поиск
             </Button>
           </form>
           <Button
@@ -323,7 +323,7 @@ export default function Earth() {
                   iconCode={weatherLocalInfo.list[0]?.weather[0]?.icon}
                   size="w-8 h-8 sm:w-10 sm:h-10"
                 />
-                {weatherLocalInfo.city.name || "Nomaʼlum joy"}
+                {weatherLocalInfo.city.name || "Неизвестное место"}
                 {isSpeaking && (
                   <Volume2 className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-400 animate-pulse" />
                 )}
@@ -337,13 +337,13 @@ export default function Earth() {
                 <div className="flex items-center gap-2 text-sm text-white/70">
                   <Droplet className="h-4 w-4 text-blue-400" />
                   <span>
-                    Namlik: {weatherLocalInfo.list[0]?.main.humidity || 0}%
+                  Влажность: {weatherLocalInfo.list[0]?.main.humidity || 0}%
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-white/70">
                   <Wind className="h-4 w-4 text-cyan-400" />
                   <span>
-                    Shamol: {weatherLocalInfo.list[0]?.wind.speed || 0} m/s
+                  Ветер: {weatherLocalInfo.list[0]?.wind.speed || 0} m/s
                   </span>
                 </div>
               </div>
@@ -361,7 +361,7 @@ export default function Earth() {
                   );
                 }}
               >
-                Batafsil
+                Подробнее
               </Button>
             </CardContent>
           </Card>
@@ -442,7 +442,7 @@ export default function Earth() {
                         <div className="flex items-center justify-between text-sm">
                           <div className="flex items-center gap-2 text-white/70">
                             <Droplet className="h-4 w-4 text-blue-400" />
-                            <span>Namlik</span>
+                            <span>Влажность</span>
                           </div>
                           <span className="text-white font-semibold">
                             {item.humidity}%
@@ -451,7 +451,7 @@ export default function Earth() {
                         <div className="flex items-center justify-between text-sm">
                           <div className="flex items-center gap-2 text-white/70">
                             <Wind className="h-4 w-4 text-cyan-400" />
-                            <span>Shamol</span>
+                            <span>Ветер</span>
                           </div>
                           <span className="text-white font-semibold">
                             {item.wind} m/s

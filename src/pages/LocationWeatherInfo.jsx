@@ -40,7 +40,7 @@ const WeatherIcon = ({ iconCode, size = "w-12 h-12 sm:w-16 sm:h-16" }) => {
     iconMap[iconCode] || (
       <img
         src={`http://openweathermap.org/img/wn/${iconCode}@2x.png`}
-        alt="weather icon"
+        alt="Иконка погоды"
         className={size}
       />
     )
@@ -65,13 +65,13 @@ const StatCard = ({ icon, label, value, color = "text-blue-300" }) => (
 
 const getWeekDay = (dateStr) => {
   const days = [
-    "Yakshanba",
-    "Dushanba",
-    "Seshanba",
-    "Chorshanba",
-    "Payshanba",
-    "Juma",
-    "Shanba",
+    "Воскресенье",
+    "Понедельник",
+    "Вторник",
+    "Среда",
+    "Четверг",
+    "Пятница",
+    "Суббота",
   ];
   const date = new Date(dateStr * 1000);
   const dayIndex = date.getDay();
@@ -98,8 +98,16 @@ const WeatherBackground = ({ iconCode }) => {
   };
 
   const animationClass = getWeatherAnimationClass();
-  const isParticleEffect = ["animate-rainy", "animate-snowy", "animate-foggy"].includes(animationClass);
-  const particleCount = isParticleEffect ? (window.innerWidth < 640 ? 30 : 50) : 5;
+  const isParticleEffect = [
+    "animate-rainy",
+    "animate-snowy",
+    "animate-foggy",
+  ].includes(animationClass);
+  const particleCount = isParticleEffect
+    ? window.innerWidth < 640
+      ? 30
+      : 50
+    : 5;
 
   const particles = Array.from({ length: particleCount }).map((_, i) => {
     const style = isParticleEffect
@@ -110,14 +118,39 @@ const WeatherBackground = ({ iconCode }) => {
           animationDuration: `${2 + Math.random() * 2}s`,
         }
       : i === 0
-      ? { top: "10%", right: "10%", width: window.innerWidth < 640 ? "12rem" : "20rem", height: window.innerWidth < 640 ? "12rem" : "20rem" }
+      ? {
+          top: "10%",
+          right: "10%",
+          width: window.innerWidth < 640 ? "12rem" : "20rem",
+          height: window.innerWidth < 640 ? "12rem" : "20rem",
+        }
       : i === 1
-      ? { bottom: "10%", left: "10%", width: window.innerWidth < 640 ? "15rem" : "25rem", height: window.innerWidth < 640 ? "15rem" : "25rem" }
+      ? {
+          bottom: "10%",
+          left: "10%",
+          width: window.innerWidth < 640 ? "15rem" : "25rem",
+          height: window.innerWidth < 640 ? "15rem" : "25rem",
+        }
       : i === 2
-      ? { top: "50%", left: "30%", width: window.innerWidth < 640 ? "8rem" : "12rem", height: window.innerWidth < 640 ? "8rem" : "12rem" }
+      ? {
+          top: "50%",
+          left: "30%",
+          width: window.innerWidth < 640 ? "8rem" : "12rem",
+          height: window.innerWidth < 640 ? "8rem" : "12rem",
+        }
       : i === 3
-      ? { top: "20%", left: "60%", width: window.innerWidth < 640 ? "10rem" : "15rem", height: window.innerWidth < 640 ? "10rem" : "15rem" }
-      : { bottom: "20%", right: "20%", width: window.innerWidth < 640 ? "9rem" : "14rem", height: window.innerWidth < 640 ? "9rem" : "14rem" };
+      ? {
+          top: "20%",
+          left: "60%",
+          width: window.innerWidth < 640 ? "10rem" : "15rem",
+          height: window.innerWidth < 640 ? "10rem" : "15rem",
+        }
+      : {
+          bottom: "20%",
+          right: "20%",
+          width: window.innerWidth < 640 ? "9rem" : "14rem",
+          height: window.innerWidth < 640 ? "9rem" : "14rem",
+        };
 
     return (
       <div
@@ -143,7 +176,7 @@ export default function BeautifulWeatherUI() {
         <div className="text-center p-6 sm:p-8 bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20">
           <div className="animate-spin w-10 h-10 sm:w-12 sm:h-12 border-4 border-white/30 border-t-white rounded-full mx-auto mb-4"></div>
           <p className="text-xl sm:text-2xl font-semibold text-white">
-            Ma'lumot topilmadi.
+            Данные не найдены
           </p>
         </div>
       </div>
@@ -258,7 +291,7 @@ export default function BeautifulWeatherUI() {
                       <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-400" />
                     </div>
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
-                      {city.name || "Nomaʼlum joy"}
+                      {city.name || "Неизвестное место"}
                     </h1>
                   </div>
                   <div className="text-center sm:text-right mt-4 sm:mt-0">
@@ -280,20 +313,22 @@ export default function BeautifulWeatherUI() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
                   <StatCard
                     icon={<Thermometer className="h-4 w-4 sm:h-5 sm:w-5" />}
-                    label="Harorat"
-                    value={`${Math.round(forecastList[0]?.main.feels_like || 0)}°C`}
+                    label="Температура"
+                    value={`${Math.round(
+                      forecastList[0]?.main.feels_like || 0
+                    )}°C`}
                     color="text-yellow-400"
                   />
                   <StatCard
                     icon={<Droplet className="h-4 w-4 sm:h-5 sm:w-5" />}
-                    label="Namlik"
+                    label="Влажность"
                     value={`${forecastList[0]?.main.humidity || 0}%`}
                     color="text-blue-400"
                   />
                   <StatCard
                     icon={<Wind className="h-4 w-4 sm:h-5 sm:w-5" />}
-                    label="Shamol"
-                    value={`${forecastList[0]?.wind.speed || 0} m/s`}
+                    label="Ветер"
+                    value={`${forecastList[0]?.wind.speed || 0} м/с`}
                     color="text-cyan-400"
                   />
                 </div>
@@ -302,10 +337,12 @@ export default function BeautifulWeatherUI() {
                   <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white/5 rounded-xl">
                     <Sun className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-400" />
                     <div>
-                      <p className="text-xs sm:text-sm text-white/60">Quyosh chiqishi</p>
+                      <p className="text-xs sm:text-sm text-white/60">
+                        Восход солнца
+                      </p>
                       <p className="font-bold text-sm sm:text-base">
                         {new Date(city.sunrise * 1000).toLocaleTimeString(
-                          "uz-UZ",
+                          "ru-RU",
                           {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -318,10 +355,12 @@ export default function BeautifulWeatherUI() {
                   <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white/5 rounded-xl">
                     <Moon className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-400" />
                     <div>
-                      <p className="text-xs sm:text-sm text-white/60">Quyosh botishi</p>
+                      <p className="text-xs sm:text-sm text-white/60">
+                        Закат солнца
+                      </p>
                       <p className="font-bold text-sm sm:text-base">
                         {new Date(city.sunset * 1000).toLocaleTimeString(
-                          "uz-UZ",
+                          "ru-RU",
                           {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -341,7 +380,7 @@ export default function BeautifulWeatherUI() {
             <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-[#0EA5E9]/30 to-blue-600/30 rounded-lg flex items-center justify-center">
               <Cloud className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
-            3 soatlik ob-havo ma'lumoti
+            Прогноз погоды на 3 часа
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
@@ -358,7 +397,7 @@ export default function BeautifulWeatherUI() {
                       {getWeekDay(item.dt)}
                     </p>
                     <p className="text-white/60 text-xs sm:text-sm">
-                      {new Date(item.dt * 1000).toLocaleTimeString("uz-UZ", {
+                      {new Date(item.dt * 1000).toLocaleTimeString("ru-RU", {
                         hour: "2-digit",
                         minute: "2-digit",
                       })}
@@ -381,7 +420,7 @@ export default function BeautifulWeatherUI() {
                     <div className="flex items-center justify-between text-xs sm:text-sm">
                       <div className="flex items-center gap-1 sm:gap-2 text-white/70">
                         <Thermometer className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
-                        <span>Harorat</span>
+                        <span>Температура</span>
                       </div>
                       <span className="text-white font-semibold">
                         {Math.round(item.main.feels_like)}°
@@ -391,7 +430,7 @@ export default function BeautifulWeatherUI() {
                     <div className="flex items-center justify-between text-xs sm:text-sm">
                       <div className="flex items-center gap-1 sm:gap-2 text-white/70">
                         <Droplet className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
-                        <span>Namlik</span>
+                        <span>Влажность</span>
                       </div>
                       <span className="text-white font-semibold">
                         {item.main.humidity}%
@@ -401,20 +440,20 @@ export default function BeautifulWeatherUI() {
                     <div className="flex items-center justify-between text-xs sm:text-sm">
                       <div className="flex items-center gap-1 sm:gap-2 text-white/70">
                         <Wind className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-400" />
-                        <span>Shamol</span>
+                        <span>Ветер</span>
                       </div>
                       <span className="text-white font-semibold">
-                        {item.wind.speed} m/s
+                        {item.wind.speed} м/с
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between text-xs sm:text-sm">
                       <div className="flex items-center gap-1 sm:gap-2 text-white/70">
                         <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-indigo-400" />
-                        <span>Ko'rinish</span>
+                        <span>Видимость</span>
                       </div>
                       <span className="text-white font-semibold">
-                        {((item.visibility || 0) / 1000).toFixed(1)} km
+                        {((item.visibility || 0) / 1000).toFixed(1)} км
                       </span>
                     </div>
                   </div>
@@ -429,13 +468,13 @@ export default function BeautifulWeatherUI() {
         <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-4 sm:p-6 border border-white/20">
           <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
             <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-red-400" />
-            Qo'shimcha ma'lumotlar
+            Дополнительная информация
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-white/80">
             <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white/5 rounded-xl">
               <span className="text-xl sm:text-2xl">🌍</span>
               <div>
-                <p className="text-xs sm:text-sm text-white/60">Koordinatalar</p>
+                <p className="text-xs sm:text-sm text-white/60">Координаты</p>
                 <p className="font-bold text-sm sm:text-base">
                   {city.coord?.lat?.toFixed(4) || "N/A"},{" "}
                   {city.coord?.lon?.toFixed(4) || "N/A"}
@@ -445,7 +484,7 @@ export default function BeautifulWeatherUI() {
             <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white/5 rounded-xl">
               <span className="text-xl sm:text-2xl">⏰</span>
               <div>
-                <p className="text-xs sm:text-sm text-white/60">Vaqt zonasi</p>
+                <p className="text-xs sm:text-sm text-white/60">Часовой пояс</p>
                 <p className="font-bold text-sm sm:text-base">
                   UTC {(city.timezone || 0) / 3600 >= 0 ? "+" : ""}
                   {Math.round((city.timezone || 0) / 3600)}
