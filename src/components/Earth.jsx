@@ -119,55 +119,35 @@ export default function Earth() {
 
   const apiKey = "129796c288d562d3a9ef920c68ee1612";
 
-  const getHealthAdvice = (temp, isRussian = false) => {
-    if (isRussian) {
-      if (temp < 0) {
-        return "Носите тёплую одежду, избегайте холода.";
-      } else if (temp >= 0 && temp < 15) {
-        return "Носите лёгкую тёплую одежду.";
-      } else if (temp >= 15 && temp < 25) {
-        return "Погода комфортная, будьте активны на свежем воздухе.";
-      } else if (temp >= 25 && temp < 35) {
-        return "Пейте больше воды, держитесь в прохладном месте.";
-      } else {
-        return "Остерегайтесь жары, пейте больше воды и оставайтесь в тени.";
-      }
+  const getHealthAdvice = (temp) => {
+    if (temp < 0) {
+      return "Носите тёплую одежду, избегайте холода.";
+    } else if (temp >= 0 && temp < 15) {
+      return "Носите лёгкую тёплую одежду.";
+    } else if (temp >= 15 && temp < 25) {
+      return "Погода комфортная, будьте активны на свежем воздухе.";
+    } else if (temp >= 25 && temp < 35) {
+      return "Пейте больше воды, держитесь в прохладном месте.";
     } else {
-      if (temp < 0) {
-        return "Issiq kiyim kiying, sovuqdan saqlaning.";
-      } else if (temp >= 0 && temp < 15) {
-        return "Engil issiq kiyim kiying.";
-      } else if (temp >= 15 && temp < 25) {
-        return "Havo qulay, ochiq havoda faol bo‘ling.";
-      } else if (temp >= 25 && temp < 35) {
-        return "Ko‘proq suv iching, salqin joyda saqlaning.";
-      } else {
-        return "Issiqlikdan ehtiyot bo‘ling, ko‘proq suv iching va soyada qoling.";
-      }
+      return "Остерегайтесь жары, пейте больше воды и оставайтесь в тени.";
     }
   };
 
-  const speakWeather = (cityName, temp, country) => {
+  const speakWeather = (cityName, temp) => {
     if (window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
     }
     const roundedTemp = Math.round(temp);
-    const isRussian = country === "RU";
-    const advice = getHealthAdvice(temp, isRussian);
-    const message = isRussian
-      ? `В ${cityName} температура воздуха ${roundedTemp} градуса. ${advice}`
-      : `${cityName}da havo harorati ${roundedTemp} daraja. ${advice}`;
+    const advice = getHealthAdvice(roundedTemp);
+    const message = `В ${cityName} температура воздуха ${roundedTemp} градуса. ${advice}`;
     const utterance = new SpeechSynthesisUtterance(message);
-    utterance.lang = isRussian ? "ru-RU" : "uz-UZ";
+    utterance.lang = "ru-RU";
     utterance.volume = 1;
     utterance.rate = 1;
     utterance.pitch = 1;
 
     const voices = window.speechSynthesis.getVoices();
-    const voice = isRussian
-      ? voices.find((voice) => voice.lang === "ru-RU")
-      : voices.find((voice) => voice.lang === "uz-UZ") ||
-        voices.find((voice) => voice.lang === "en-US");
+    const voice = voices.find((voice) => voice.lang === "ru-RU");
     utterance.voice = voice;
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
